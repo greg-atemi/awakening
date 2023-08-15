@@ -1,7 +1,11 @@
-import { useEffect, useState, useMemo } from 'react';
 import { BrowserRouter as Router, Switch, Route} from "react-router-dom";
-import './main-page.css';
+import { useEffect, useState, useMemo } from 'react';
+import FeaturedHouse from "./featured-house";
 import Header from "./header";
+import './main-page.css';
+import SearchResults from "../search-results";
+import HouseFilter from "./house-filter";
+import HouseFromQuery from "../house/HouseFromQuery";
 
 function Index() {
   const [allHouses, setAllHouses] = useState([]);
@@ -25,10 +29,18 @@ function Index() {
       <Router>
         <div className="container">
           <Header subtitle="Boma Yangu!!"/>
-
+          <HouseFilter allHouses={allHouses} />
           <Switch>
+            <Route path="/searchresults/:country">
+              <SearchResults allHouses={allHouses}/>
+            </Route>
+
+            <Route path="/house/:id">
+              <HouseFromQuery allHouses={allHouses} />
+            </Route>
+
             <Route path="/">
-              {/*<FeaturedHouse/>*/}
+              <FeaturedHouse house={featuredHouse}></FeaturedHouse>
             </Route>
           </Switch>
         </div>
