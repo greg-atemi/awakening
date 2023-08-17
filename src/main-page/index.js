@@ -6,24 +6,12 @@ import './main-page.css';
 import SearchResults from "../search-results";
 import HouseFilter from "./house-filter";
 import HouseFromQuery from "../house/HouseFromQuery";
+import useHouses from "../hooks/useHouses";
+import useFeaturedHouse from "../hooks/useFeatuedHouse";
 
 function Index() {
-  const [allHouses, setAllHouses] = useState([]);
-  useEffect(() => {
-    const fetchHouses = async () => {
-      const rsp = await fetch("/houses.json");
-      const houses = await rsp.json();
-      setAllHouses(houses);
-    };
-    fetchHouses();
-  }, []);
-
-  const featuredHouse = useMemo(() => {
-    if (allHouses.length) {
-      const randomIndex = Math.floor(Math.random() * allHouses.length);
-      return allHouses[randomIndex];
-    }
-  }, [allHouses])
+  const allHouses = useHouses();
+  const featuredHouse = useFeaturedHouse(allHouses);
 
     return (
       <Router>
