@@ -8,6 +8,7 @@ import HouseFilter from "./house-filter";
 import HouseFromQuery from "../house/HouseFromQuery";
 import useHouses from "../hooks/useHouses";
 import useFeaturedHouse from "../hooks/useFeatuedHouse";
+import HouseContext from "../context/housesContext";
 
 function Index() {
   const allHouses = useHouses();
@@ -15,23 +16,25 @@ function Index() {
 
     return (
       <Router>
-        <div className="container">
-          <Header subtitle="Boma Yangu!!"/>
-          <HouseFilter allHouses={allHouses} />
-          <Switch>
-            <Route path="/searchresults/:country">
-              <SearchResults allHouses={allHouses}/>
-            </Route>
+        <HouseContext.Provider value={allHouses}>
+          <div className="container">
+            <Header subtitle="Boma Yangu!!"/>
+            <HouseFilter />
+            <Switch>
+              <Route path="/searchresults/:country">
+                <SearchResults />
+              </Route>
 
-            <Route path="/house/:id">
-              <HouseFromQuery allHouses={allHouses} />
-            </Route>
+              <Route path="/house/:id">
+                <HouseFromQuery />
+              </Route>
 
-            <Route path="/">
-              <FeaturedHouse house={featuredHouse}></FeaturedHouse>
-            </Route>
-          </Switch>
-        </div>
+              <Route path="/">
+                <FeaturedHouse house={featuredHouse}></FeaturedHouse>
+              </Route>
+            </Switch>
+          </div>
+        </HouseContext.Provider>
       </Router>
   );
 }
